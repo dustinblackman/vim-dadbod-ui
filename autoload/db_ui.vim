@@ -160,6 +160,24 @@ function! db_ui#statusline(...)
   return prefix.join(content, separator)
 endfunction
 
+function! db_ui#get_instance() abort
+  return s:init()
+endfunction
+
+function! db_ui#get_db(db_key_name) abort
+  call s:init()
+  if empty(a:db_key_name)
+    return {}
+  endif
+  if empty(s:dbui_instance) || empty(get(s:dbui_instance, 'dbs', {}))
+    return {}
+  endif
+  if !has_key(s:dbui_instance.dbs, a:db_key_name)
+    return {}
+  endif
+  return s:dbui_instance.dbs[a:db_key_name]
+endfunction
+
 function! s:dbui.new() abort
   let instance = copy(self)
   let instance.dbs = {}
